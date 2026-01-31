@@ -1,0 +1,25 @@
+# --- System Files ---
+.DS_Store
+__pycache__/
+*.pyc
+
+# --- Virtual Environments ---
+venv/
+env/
+.env
+
+# --- Project Data (NEVER commit these) ---
+data/
+*.zip
+*.csv
+
+# --- Checkpoints & Models (Large binaries) ---
+checkpoints/
+*.h5
+*.keras
+*.weights
+saved_model/
+
+# --- IDE Settings ---
+.vscode/
+.idea/
