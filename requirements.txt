@@ -6,3 +6,5 @@ pillow
 scikit-learn
 tensorflow-macos
 tensorflow-metal
+opencv-python
+pillow

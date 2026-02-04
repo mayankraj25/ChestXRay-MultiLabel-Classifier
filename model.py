@@ -11,7 +11,7 @@ def build_xray_model(num_classes=14,input_shape=(224,224,3)):
     base_model.trainable=False
 
     inputs=layers.Input(shape=input_shape)
-    x=base_model(inputs,training=False) 
+    x=base_model(inputs) 
     x=layers.GlobalAveragePooling2D()(x)
     x=layers.Dense(1024,activation='relu')(x)
     x=layers.Dropout(0.5)(x)

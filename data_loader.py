@@ -5,7 +5,16 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 def get_train_val_generators(csv_path='data/clean_labels.csv', img_dir='data/images'):
     df = pd.read_csv(csv_path)
 
-    all_labels=[x for x in df.columns if x not in ['Image Index', 'Finding Labels', 'path', 'No Finding','Follow-up #','Patient Age','Patient Gender','View Position','OriginalImageWidth','OriginalImageHeight','OriginalImagePixelSpacing_x','OriginalImagePixelSpacing_y',]]
+    target_diseases = [
+        'Atelectasis', 'Cardiomegaly', 'Consolidation', 'Edema', 'Effusion', 
+        'Emphysema', 'Fibrosis', 'Hernia', 'Infiltration', 'Mass', 
+        'Nodule', 'Pleural_Thickening', 'Pneumonia', 'Pneumothorax'
+    ]
+    
+    # Only keep the ones that actually exist in our CSV columns
+    all_labels = [x for x in target_diseases if x in df.columns]
+    
+    print(f"Sanity Check - Training on these {len(all_labels)} classes: {all_labels}")
     print(f"Detecting {len(all_labels)} pathologies: {all_labels}")
 
     train_df, val_df=train_test_split(df, test_size=0.2,random_state=42)
@@ -14,12 +23,12 @@ def get_train_val_generators(csv_path='data/clean_labels.csv', img_dir='data/ima
     train_datagen=ImageDataGenerator(
         rescale=1./255,
         rotation_range=15,
-        width_shift_range=0.1,
-        height_shift_range=0.1,
+        width_shift_range=0.15,
+        height_shift_range=0.15,
         shear_range=0.1,
-        zoom_range=0.1,
+        zoom_range=0.25,
         horizontal_flip=True,
-        fill_mode='nearest'
+        fill_mode='constant'
     )
     val_datagen=ImageDataGenerator(rescale=1./255)
 
@@ -50,7 +59,7 @@ def get_train_val_generators(csv_path='data/clean_labels.csv', img_dir='data/ima
 
 if __name__=="__main__":
     import matplotlib.pyplot as plt
-    
+
     train_gen, val_gen, all_labels = get_train_val_generators()
     x_batch, y_batch = next(train_gen)
 
